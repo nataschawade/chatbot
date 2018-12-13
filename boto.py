@@ -6,10 +6,23 @@ import json
 import random
 import requests
 
-
 @route('/', method='GET')
 def index():
     return template("chatbot.html")
+
+#For weather API
+url = 'http://api.openweathermap.org/data/2.5/weather?q=jerusalem&appid=e6895d95d15da7b77300b381e0a158f6&units=metric'
+res = requests.get(url)
+data = res.json()
+
+weather = {
+    'temp': data['main']['temp'],
+    'wind_speed': data['wind']['speed'],
+    'latitude': data['coord']['lat'],
+    'longitude': data['coord']['lon'],
+    'description':data['weather'][0]['description']
+}
+
 data = {
     'swear_words' :["shit", "merde","bitch","looser","fuck","asshole"],
     'swear_answers' :["You're a shit!", "I don't speak french","You're a bitch","it's not my fault i have no friends"],
@@ -22,16 +35,7 @@ data = {
     'answers':["Im a bit sad, my dog died", "I'm high","I'm doing great I just bought a new card","I'm excited, I'm going on holiday on tuesday"],
     'counter':0
 }
-#
-# swear_words= ["shit", "merde","bitch","looser","fuck","asshole"]
-# swear_answers =["You're a shit!", "I don't speak french","You're a bitch","it's not my fault i have no friends"]
-# whatsup = ["hello","hey","good morning","good afternoon","hi"]
-# good_greetings=["good","amazing","fantastic","super","happy","great"]
-# bad_greetings=["bad","not great","awful","sad","died"]
-# joke_selection=["Did you hear about the restaurant on the moon? Great food, no atmosphere.","What do you call a fake noodle? An Impasta.","How many apples grow on a tree? All of them.",
-#           "Want to hear a joke about paper? Nevermind it's tearable.","I just watched a program about beavers. It was the best dam program I've ever seen." ]
-# questions=["you?", "how you doing","whatsup", "what's up"]
-# answers=["Im a bit sad, my dog died", "I'm high","I'm doing great I just bought a new card","I'm excited, I'm going on holiday on tuesday"]
+
 
 def main_function(input, animation):
     message = input.lower()
@@ -39,10 +43,16 @@ def main_function(input, animation):
     if "joke" in input:
         return jokes(), "giggling"
 
+    if "weather" in input:
+        return weather_func(), "inlove"
+
+    if "temperature" in input:
+        return temperature(), "takeoff"
+
     for word in message.split():
 
         if word in data['whatsup']:
-            return whatsup_answer(input), "excited"
+            return whatsup_answer(input), "bored"
 
         if any(word in message for word in data['bad_greetings']):
             return bad_greetings_answ(), "crying"
@@ -55,6 +65,7 @@ def main_function(input, animation):
 
         if word in data['questions']:
             return about_me(), "dog"
+
 
     return hello(input), "ok"
 
@@ -84,7 +95,9 @@ def bad_greetings_answ():
     return "sorry to hear"
 
 def jokes():
-    return random.choice(data['joke_selection'])
+    # return random.choice(data['joke_selection'])
+    joke = json.loads(urllib.request.urlopen("http://api.icndb.com/jokes/random/").read().decode('utf-8'))
+    return joke["value"]["joke"]
 
 def about_me():
     return random.choice(data['answers'])
@@ -93,20 +106,11 @@ def reset_counter():
     data['counter']=0
     return
 
+def temperature():
+    return 'Temperature : {} degree celcius'.format(weather['temp'])
 
-# r = requests.get('https://api.github.com/events')
-# print(r.text)
-# print(r.status_code)
-#
-# r = requests.get('http://httpbin.org/get')
-# print(r.headers['Access-Control-Allow-Credentials'])
-# print(r.headers['Access-Control-Allow-Origin'])
-# print(r.headers['CONNECTION'])
-# print(r.headers['content-length'])
-# print(r.headers['Content-Type'])
-# print(r.headers['Date'])
-# print(r.headers['server'])
-# print(r.headers['via'])
+def weather_func():
+    return 'It looks like there will be a {0} and wind speed of {1} m/s'.format(weather['description'],weather['wind_speed'])
 
 
 @route("/chat", method='POST')
