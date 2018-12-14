@@ -5,7 +5,6 @@ from bottle import route, run, template, static_file, request
 import json
 import random
 import requests
-import urllib.request
 
 @route('/', method='GET')
 def index():
@@ -52,8 +51,10 @@ def main_function(input, animation):
         return temperature(), "takeoff"
 
     for word in message.split():
+        if any(word in message for word in data['questions']):
+            return about_me(), "dog"
 
-        if word in data['whatsup']:
+        if word in data['whatsup'] and word not in data['questions']:
             return whatsup_answer(input), "bored"
 
         if any(word in message for word in data['bad_greetings']):
@@ -65,9 +66,6 @@ def main_function(input, animation):
         if word in data['swear_words']:
             return swear(input), "crying"
 
-        if word in data['questions']:
-            return about_me(), "dog"
-
 
     return hello(input), "ok"
 
@@ -78,7 +76,6 @@ def swear(input):
             index_input = data['swear_words'].index(words)
             output = data['swear_answers'][index_input]
             return output
-
 
 def hello(name):
     data['counter'] +=1
@@ -113,44 +110,10 @@ def temperature():
     elif weather['temp']> 24:
         return "Olala it's getting hot outside, it's {} degree celcius right now!".format(weather['temp'])
     else:
-        return "is it hot or is it cold? I would say that's a personal opinion. But I can tell you the precise temperature outside is currently {} celsius.".format(weather['temp'])
+        return "Is it hot or is it cold? I would say that's a personal opinion. But I can tell you the precise temperature outside is currently {} celsius.".format(weather['temp'])
 
 def weather_func():
     return 'It looks like there will be a {0} and wind speed of {1} m/s'.format(weather['description'],weather['wind_speed'])
-
-
-# Set up the parameters we want to pass to the API.
-# This is the latitude and longitude of New York City.
-parameters = {"lat": 40.71, "lon": -74}
-
-# Make a get request with the parameters.
-response = requests.get("http://api.open-notify.org/iss-pass.json", params=parameters)
-
-# Print the content of the response (the data the server returned)
-# print(response.content)
-
-new = response.content.decode("utf-8")
-
-
-# Make the same request we did earlier, but with the coordinates of San Francisco instead.
-# parameters = {"lat": 37.78, "lon": -122.41}
-# response = requests.get("http://api.open-notify.org/iss-pass.json", params=parameters)
-
-# Get the response data as a python object.  Verify that it's a dictionary.
-# data = response.json()
-# print(type(data))
-# print(data)
-
-
-# Get the response from the API endpoint.
-# response = requests.get("https://api.chucknorris.io/jokes/random")
-# joke = response.json()
-
-# 9 people are currently in space.
-print
-
-
-
 
 
 @route("/chat", method='POST')
