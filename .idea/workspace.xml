@@ -10,6 +10,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Assignment" />
+  </component>
   <component name="FileEditorManager">
     <leaf>
       <file pinned="false" current-in-tab="false">
@@ -24,8 +27,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/boto.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="108">
-              <caret line="94" column="26" lean-forward="true" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
+            <state relative-caret-position="163">
+              <caret line="102" selection-start-line="102" selection-end-line="102" selection-end-column="108" />
               <folding>
                 <element signature="e#53#114#0" expanded="true" />
               </folding>
@@ -53,9 +56,9 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="223" />
+    <option name="x" value="689" />
     <option name="y" value="23" />
-    <option name="width" value="1057" />
+    <option name="width" value="591" />
     <option name="height" value="742" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -146,15 +149,15 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="223" y="23" width="1057" height="742" extended-state="0" />
+    <frame x="689" y="23" width="591" height="742" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13416989" />
+      <window_info id="Favorites" side_tool="true" weight="0.32982457" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.13416989" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Version Control" weight="0.3287037" />
       <window_info anchor="bottom" id="Inspection Results" weight="0.3287037" />
-      <window_info anchor="bottom" id="Python Console" weight="0.3287037" />
+      <window_info anchor="bottom" id="Python Console" weight="0.3276923" />
       <window_info anchor="bottom" id="Terminal" weight="0.3287037" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -213,8 +216,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/boto.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="94" column="26" lean-forward="true" selection-start-line="94" selection-start-column="26" selection-end-line="94" selection-end-column="26" />
+        <state relative-caret-position="163">
+          <caret line="102" selection-start-line="102" selection-end-line="102" selection-end-column="108" />
           <folding>
             <element signature="e#53#114#0" expanded="true" />
           </folding>

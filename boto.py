@@ -5,6 +5,7 @@ from bottle import route, run, template, static_file, request
 import json
 import random
 import requests
+import urllib.request
 
 @route('/', method='GET')
 def index():
@@ -25,10 +26,11 @@ weather = {
 
 data = {
     'swear_words' :["shit", "merde","bitch","looser","fuck","asshole"],
-    'swear_answers' :["You're a shit!", "I don't speak french","You're a bitch","it's not my fault i have no friends"],
+    'swear_answers' :["You're a shit!", "I don't speak french","You're a bitch","it's not my fault i have no friends","the word f*** should not be in the english language",
+                      "a**h*** is not a nice word"],
     'whatsup' : ["hello","hey","good morning","good afternoon","hi"],
     "good_greetings" : ["good", "amazing", "fantastic", "super", "happy", "great"],
-    'bad_greetings':["bad","not great","awful","sad","died"],
+    'bad_greetings':["bad","not great","awful","sad","died","not feeling great"],
     'joke_selection':["Did you hear about the restaurant on the moon? Great food, no atmosphere.","What do you call a fake noodle? An Impasta.","How many apples grow on a tree? All of them.",
               "Want to hear a joke about paper? Nevermind it's tearable.","I just watched a program about beavers. It was the best dam program I've ever seen." ],
     'questions':["you?", "how you doing","whatsup", "what's up"],
@@ -95,9 +97,8 @@ def bad_greetings_answ():
     return "sorry to hear"
 
 def jokes():
-    # return random.choice(data['joke_selection'])
-    joke = json.loads(urllib.request.urlopen("http://api.icndb.com/jokes/random/").read().decode('utf-8'))
-    return joke["value"]["joke"]
+    response = requests.get("https://api.chucknorris.io/jokes/random").json()
+    return (response["value"])
 
 def about_me():
     return random.choice(data['answers'])
@@ -107,10 +108,49 @@ def reset_counter():
     return
 
 def temperature():
-    return 'Temperature : {} degree celcius'.format(weather['temp'])
+    if weather['temp']< 14:
+        return "Its cold outside, make sure to dress up warm! It's only {} degree celcius right now!".format(weather['temp'])
+    elif weather['temp']> 24:
+        return "Olala it's getting hot outside, it's {} degree celcius right now!".format(weather['temp'])
+    else:
+        return "is it hot or is it cold? I would say that's a personal opinion. But I can tell you the precise temperature outside is currently {} celsius.".format(weather['temp'])
 
 def weather_func():
     return 'It looks like there will be a {0} and wind speed of {1} m/s'.format(weather['description'],weather['wind_speed'])
+
+
+# Set up the parameters we want to pass to the API.
+# This is the latitude and longitude of New York City.
+parameters = {"lat": 40.71, "lon": -74}
+
+# Make a get request with the parameters.
+response = requests.get("http://api.open-notify.org/iss-pass.json", params=parameters)
+
+# Print the content of the response (the data the server returned)
+# print(response.content)
+
+new = response.content.decode("utf-8")
+
+
+# Make the same request we did earlier, but with the coordinates of San Francisco instead.
+# parameters = {"lat": 37.78, "lon": -122.41}
+# response = requests.get("http://api.open-notify.org/iss-pass.json", params=parameters)
+
+# Get the response data as a python object.  Verify that it's a dictionary.
+# data = response.json()
+# print(type(data))
+# print(data)
+
+
+# Get the response from the API endpoint.
+# response = requests.get("https://api.chucknorris.io/jokes/random")
+# joke = response.json()
+
+# 9 people are currently in space.
+print
+
+
+
 
 
 @route("/chat", method='POST')
@@ -135,7 +175,7 @@ def javascripts(filename):
 @route('/css/<filename:re:.*\.css>', method='GET')
 def stylesheets(filename):
     return static_file(filename, root='css')
-
+1
 
 @route('/images/<filename:re:.*\.(jpg|png|gif|ico)>', method='GET')
 def images(filename):
